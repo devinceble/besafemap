@@ -3,13 +3,29 @@
 class PeopleController extends BaseController {
 
 	/**
+	 * Person Repository
+	 *
+	 * @var Person
+	 */
+	protected $person;
+
+	public function __construct(Person $person)
+	{
+//                 echo 'hai';die();
+		$this->person = $person;
+	}
+
+	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
 	public function index()
 	{
-        return View::make('peoples.index');
+               
+		$people = $this->person->all();
+
+		return View::make('people.index', compact('people'));
 	}
 
 	/**
@@ -19,7 +35,7 @@ class PeopleController extends BaseController {
 	 */
 	public function create()
 	{
-        return View::make('peoples.create');
+		return View::make('people.create');
 	}
 
 	/**
@@ -29,7 +45,20 @@ class PeopleController extends BaseController {
 	 */
 	public function store()
 	{
-		//
+		$input = Input::all();
+		$validation = Validator::make($input, Person::$rules);
+
+		if ($validation->passes())
+		{
+			$this->person->create($input);
+
+			return Redirect::route('people.index');
+		}
+
+		return Redirect::route('people.create')
+			->withInput()
+			->withErrors($validation)
+			->with('message', 'There were validation errors.');
 	}
 
 	/**
@@ -40,7 +69,9 @@ class PeopleController extends BaseController {
 	 */
 	public function show($id)
 	{
-        return View::make('peoples.show');
+		$person = $this->person->findOrFail($id);
+
+		return View::make('people.show', compact('person'));
 	}
 
 	/**
@@ -51,7 +82,14 @@ class PeopleController extends BaseController {
 	 */
 	public function edit($id)
 	{
-        return View::make('peoples.edit');
+		$person = $this->person->find($id);
+
+		if (is_null($person))
+		{
+			return Redirect::route('people.index');
+		}
+
+		return View::make('people.edit', compact('person'));
 	}
 
 	/**
@@ -62,7 +100,21 @@ class PeopleController extends BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$input = array_except(Input::all(), '_method');
+		$validation = Validator::make($input, Person::$rules);
+
+		if ($validation->passes())
+		{
+			$person = $this->person->find($id);
+			$person->update($input);
+
+			return Redirect::route('people.show', $id);
+		}
+
+		return Redirect::route('people.edit', $id)
+			->withInput()
+			->withErrors($validation)
+			->with('message', 'There were validation errors.');
 	}
 
 	/**
@@ -73,7 +125,9 @@ class PeopleController extends BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$this->person->find($id)->delete();
+
+		return Redirect::route('people.index');
 	}
 
 }

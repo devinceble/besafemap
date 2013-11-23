@@ -3,13 +3,27 @@
 class PlacesController extends BaseController {
 
 	/**
+	 * Place Repository
+	 *
+	 * @var Place
+	 */
+	protected $place;
+
+	public function __construct(Place $place)
+	{
+		$this->place = $place;
+	}
+
+	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
 	public function index()
 	{
-        return View::make('places.index');
+		$places = $this->place->all();
+
+		return View::make('places.index', compact('places'));
 	}
 
 	/**
@@ -19,7 +33,7 @@ class PlacesController extends BaseController {
 	 */
 	public function create()
 	{
-        return View::make('places.create');
+		return View::make('places.create');
 	}
 
 	/**
@@ -29,7 +43,20 @@ class PlacesController extends BaseController {
 	 */
 	public function store()
 	{
-		//
+		$input = Input::all();
+		$validation = Validator::make($input, Place::$rules);
+
+		if ($validation->passes())
+		{
+			$this->place->create($input);
+
+			return Redirect::route('places.index');
+		}
+
+		return Redirect::route('places.create')
+			->withInput()
+			->withErrors($validation)
+			->with('message', 'There were validation errors.');
 	}
 
 	/**
@@ -40,7 +67,9 @@ class PlacesController extends BaseController {
 	 */
 	public function show($id)
 	{
-        return View::make('places.show');
+		$place = $this->place->findOrFail($id);
+
+		return View::make('places.show', compact('place'));
 	}
 
 	/**
@@ -51,7 +80,14 @@ class PlacesController extends BaseController {
 	 */
 	public function edit($id)
 	{
-        return View::make('places.edit');
+		$place = $this->place->find($id);
+
+		if (is_null($place))
+		{
+			return Redirect::route('places.index');
+		}
+
+		return View::make('places.edit', compact('place'));
 	}
 
 	/**
@@ -62,7 +98,21 @@ class PlacesController extends BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$input = array_except(Input::all(), '_method');
+		$validation = Validator::make($input, Place::$rules);
+
+		if ($validation->passes())
+		{
+			$place = $this->place->find($id);
+			$place->update($input);
+
+			return Redirect::route('places.show', $id);
+		}
+
+		return Redirect::route('places.edit', $id)
+			->withInput()
+			->withErrors($validation)
+			->with('message', 'There were validation errors.');
 	}
 
 	/**
@@ -73,7 +123,9 @@ class PlacesController extends BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$this->place->find($id)->delete();
+
+		return Redirect::route('places.index');
 	}
 
 }

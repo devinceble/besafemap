@@ -3,13 +3,27 @@
 class TokensController extends BaseController {
 
 	/**
+	 * Token Repository
+	 *
+	 * @var Token
+	 */
+	protected $token;
+
+	public function __construct(Token $token)
+	{
+		$this->token = $token;
+	}
+
+	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
 	public function index()
 	{
-        return View::make('tokens.index');
+		$tokens = $this->token->all();
+
+		return View::make('tokens.index', compact('tokens'));
 	}
 
 	/**
@@ -19,7 +33,7 @@ class TokensController extends BaseController {
 	 */
 	public function create()
 	{
-        return View::make('tokens.create');
+		return View::make('tokens.create');
 	}
 
 	/**
@@ -29,7 +43,20 @@ class TokensController extends BaseController {
 	 */
 	public function store()
 	{
-		//
+		$input = Input::all();
+		$validation = Validator::make($input, Token::$rules);
+
+		if ($validation->passes())
+		{
+			$this->token->create($input);
+
+			return Redirect::route('tokens.index');
+		}
+
+		return Redirect::route('tokens.create')
+			->withInput()
+			->withErrors($validation)
+			->with('message', 'There were validation errors.');
 	}
 
 	/**
@@ -40,7 +67,9 @@ class TokensController extends BaseController {
 	 */
 	public function show($id)
 	{
-        return View::make('tokens.show');
+		$token = $this->token->findOrFail($id);
+
+		return View::make('tokens.show', compact('token'));
 	}
 
 	/**
@@ -51,7 +80,14 @@ class TokensController extends BaseController {
 	 */
 	public function edit($id)
 	{
-        return View::make('tokens.edit');
+		$token = $this->token->find($id);
+
+		if (is_null($token))
+		{
+			return Redirect::route('tokens.index');
+		}
+
+		return View::make('tokens.edit', compact('token'));
 	}
 
 	/**
@@ -62,7 +98,21 @@ class TokensController extends BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$input = array_except(Input::all(), '_method');
+		$validation = Validator::make($input, Token::$rules);
+
+		if ($validation->passes())
+		{
+			$token = $this->token->find($id);
+			$token->update($input);
+
+			return Redirect::route('tokens.show', $id);
+		}
+
+		return Redirect::route('tokens.edit', $id)
+			->withInput()
+			->withErrors($validation)
+			->with('message', 'There were validation errors.');
 	}
 
 	/**
@@ -73,7 +123,9 @@ class TokensController extends BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$this->token->find($id)->delete();
+
+		return Redirect::route('tokens.index');
 	}
 
 }

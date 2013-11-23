@@ -3,13 +3,27 @@
 class LocationsController extends BaseController {
 
 	/**
+	 * Location Repository
+	 *
+	 * @var Location
+	 */
+	protected $location;
+
+	public function __construct(Location $location)
+	{
+		$this->location = $location;
+	}
+
+	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
 	public function index()
 	{
-        return View::make('locations.index');
+		$locations = $this->location->all();
+
+		return View::make('locations.index', compact('locations'));
 	}
 
 	/**
@@ -19,7 +33,7 @@ class LocationsController extends BaseController {
 	 */
 	public function create()
 	{
-        return View::make('locations.create');
+		return View::make('locations.create');
 	}
 
 	/**
@@ -29,7 +43,20 @@ class LocationsController extends BaseController {
 	 */
 	public function store()
 	{
-		//
+		$input = Input::all();
+		$validation = Validator::make($input, Location::$rules);
+
+		if ($validation->passes())
+		{
+			$this->location->create($input);
+
+			return Redirect::route('locations.index');
+		}
+
+		return Redirect::route('locations.create')
+			->withInput()
+			->withErrors($validation)
+			->with('message', 'There were validation errors.');
 	}
 
 	/**
@@ -40,7 +67,9 @@ class LocationsController extends BaseController {
 	 */
 	public function show($id)
 	{
-        return View::make('locations.show');
+		$location = $this->location->findOrFail($id);
+
+		return View::make('locations.show', compact('location'));
 	}
 
 	/**
@@ -51,7 +80,14 @@ class LocationsController extends BaseController {
 	 */
 	public function edit($id)
 	{
-        return View::make('locations.edit');
+		$location = $this->location->find($id);
+
+		if (is_null($location))
+		{
+			return Redirect::route('locations.index');
+		}
+
+		return View::make('locations.edit', compact('location'));
 	}
 
 	/**
@@ -62,7 +98,21 @@ class LocationsController extends BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$input = array_except(Input::all(), '_method');
+		$validation = Validator::make($input, Location::$rules);
+
+		if ($validation->passes())
+		{
+			$location = $this->location->find($id);
+			$location->update($input);
+
+			return Redirect::route('locations.show', $id);
+		}
+
+		return Redirect::route('locations.edit', $id)
+			->withInput()
+			->withErrors($validation)
+			->with('message', 'There were validation errors.');
 	}
 
 	/**
@@ -73,7 +123,9 @@ class LocationsController extends BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$this->location->find($id)->delete();
+
+		return Redirect::route('locations.index');
 	}
 
 }

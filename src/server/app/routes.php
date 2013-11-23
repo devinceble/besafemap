@@ -24,16 +24,19 @@ Route::get('/', array('before'=>'auth','uses' =>'HomeController@showWelcome'));/
 // 	return View::make('hello');
 // });
 
-Route::resource('users', 'UsersController');
 
-Route::resource('tokens', 'TokensController');
+Route::resource('tweets', 'TweetsController');
 
-Route::resource('people', 'PeopleController');
-
-Route::resource('messages', 'MessagesController');
+Route::resource('donations', 'DonationsController');
 
 Route::resource('locations', 'LocationsController');
 
+Route::resource('messages', 'MessagesController');
+
+Route::resource('people', 'PeopleController');
+
 Route::resource('places', 'PlacesController');
 
-Route::resource('donations', 'DonationsController');
+Route::resource('tokens', 'TokensController');
+
+Route::resource('users', 'UsersController');

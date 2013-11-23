@@ -3,13 +3,27 @@
 class DonationsController extends BaseController {
 
 	/**
+	 * Donation Repository
+	 *
+	 * @var Donation
+	 */
+	protected $donation;
+
+	public function __construct(Donation $donation)
+	{
+		$this->donation = $donation;
+	}
+
+	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
 	public function index()
 	{
-        return View::make('donations.index');
+		$donations = $this->donation->all();
+
+		return View::make('donations.index', compact('donations'));
 	}
 
 	/**
@@ -19,7 +33,7 @@ class DonationsController extends BaseController {
 	 */
 	public function create()
 	{
-        return View::make('donations.create');
+		return View::make('donations.create');
 	}
 
 	/**
@@ -29,7 +43,20 @@ class DonationsController extends BaseController {
 	 */
 	public function store()
 	{
-		//
+		$input = Input::all();
+		$validation = Validator::make($input, Donation::$rules);
+
+		if ($validation->passes())
+		{
+			$this->donation->create($input);
+
+			return Redirect::route('donations.index');
+		}
+
+		return Redirect::route('donations.create')
+			->withInput()
+			->withErrors($validation)
+			->with('message', 'There were validation errors.');
 	}
 
 	/**
@@ -40,7 +67,9 @@ class DonationsController extends BaseController {
 	 */
 	public function show($id)
 	{
-        return View::make('donations.show');
+		$donation = $this->donation->findOrFail($id);
+
+		return View::make('donations.show', compact('donation'));
 	}
 
 	/**
@@ -51,7 +80,14 @@ class DonationsController extends BaseController {
 	 */
 	public function edit($id)
 	{
-        return View::make('donations.edit');
+		$donation = $this->donation->find($id);
+
+		if (is_null($donation))
+		{
+			return Redirect::route('donations.index');
+		}
+
+		return View::make('donations.edit', compact('donation'));
 	}
 
 	/**
@@ -62,7 +98,21 @@ class DonationsController extends BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$input = array_except(Input::all(), '_method');
+		$validation = Validator::make($input, Donation::$rules);
+
+		if ($validation->passes())
+		{
+			$donation = $this->donation->find($id);
+			$donation->update($input);
+
+			return Redirect::route('donations.show', $id);
+		}
+
+		return Redirect::route('donations.edit', $id)
+			->withInput()
+			->withErrors($validation)
+			->with('message', 'There were validation errors.');
 	}
 
 	/**
@@ -73,7 +123,9 @@ class DonationsController extends BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$this->donation->find($id)->delete();
+
+		return Redirect::route('donations.index');
 	}
 
 }
