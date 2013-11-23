@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html ng-app="Expresso">
+    <head>
+        <title>Dashboard</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/main-dashboard.css" rel="stylesheet">
+        <link rel="shortcut icon" href="img/144x144.png" />
+    </head>
+    <body ng-controller="ExpressoCtrl">
+        <div class="row">
+            <div class="col-md-3 col-lg-3 map-panel">
+                                <div class="search-form">
+                                    <img src="img/logo.png" />
+                                    <span class="tag-line">&#147;A Life Saving Map&#148;</span>
+                                    <form>
+                                        <input type="text" name="username" placeholder="SEARCH"/>
+                                        <input type="submit" value="Submit">
+                                        <div class="clear"></div>
+                                    </form>
+                                    <div class="clear"></div>
+                                </div>
+            </div>
+            <div class="col-md-9 col-lg-9">
+                    <div id="mapcon">
+                    </div>
+            </div>
+        </div>
+        <script src="javascript/angular.min.js"></script>
+        <script src="javascript/angular-resource.min.js"></script>
+        <script src="javascript/angularjs-geolocation.min.js"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?AIzaSyAvgfQ5HaevjxN7rUsvE7mv8UghdmkQpT4&sensor=false"></script>
+        <script src="javascript/jquery.min.js"></script>
+        <script src="javascript/index.js"></script>
+    </body>
+</html>
