@@ -1,0 +1,44 @@
+1. Users
+	- username, password , user_type, created_at, updated_at, status
+
+2. Token
+	- token_id, token_private,token_public, created_at, updated_at, status
+
+Tokens_Users_Pivot
+	-user_id, token_id, status
+
+Users_Person_Pivot 
+	- user_id, person_id  ,status
+
+3. Person
+	- Firstname, Lastname, Middle Name, Age, Gender, Number , Person_status(dead or alive), Photo_Location , status
+
+===============================
+
+Person_Message_Pivot
+	- Person_id, Message_id, status
+===============================
+
+4. Message 
+	- Number, Message, Name, type(sms, mms) ,picture_location, created_at,updated_at, status(pending,sent,error)
+
+
+Message_location_pivot
+	-message_id,location_id ,message_fire_type(pre,post),status
+
+
+5. Location
+	-location_id, latitude, longtitude, status,
+
+Place_Location_Pivot
+	-Place_id,Location_id, status
+
+6. Place
+	-Place_id, Place_name, Place_address, Place_type, status
+
+7. Donations
+	- Donation_id, deliver_location, Donations_status(pending,recieved) , status
+
+
+
+Disaster Zone...
