@@ -1,0 +1,77 @@
+body {
+  font-family: "Exo",Helvetica,Arial,sans-serif;
+  background: url(../img/user-bg.jpg);
+  background-size: 100%  100%;
+  background-repeat: no-repeat;
+}
+@font-face {
+	font-family: 'Exo';
+	src: url('../fonts/Exo-Regular.eot'); /* IE9 Compat Modes */
+	src: url('../fonts/Exo-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+	     url('../fonts/Exo-Regular.woff') format('woff'), /* Modern Browsers */
+	     url('../fonts/Exo-Regular.ttf')  format('truetype'), /* Safari, Android, iOS */
+	     url('../fonts/Exo-Regular.svg#svgFontName') format('svg'); /* Legacy iOS */
+	}
+
+@font-face {
+	font-family: 'Exo-Semi-Italic';
+	src: url('../fonts/Exo-SemiBoldItalic.eot'); /* IE9 Compat Modes */
+	src: url('../fonts/Exo-SemiBoldItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+	     url('../fonts/Exo-SemiBoldItalic.woff') format('woff'), /* Modern Browsers */
+	     url('../fonts/Exo-SemiBoldItalic.ttf')  format('truetype'), /* Safari, Android, iOS */
+	     url('../fonts/Exo-SemiBoldItalic.svg#svgFontName') format('svg'); /* Legacy iOS */
+	}
+
+@font-face {
+	font-family: 'Exo-Italic';
+	src: url('../fonts/Exo-Italic.eot'); /* IE9 Compat Modes */
+	src: url('../fonts/Exo-Italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+	     url('../fonts/Exo-Italic.woff') format('woff'), /* Modern Browsers */
+	     url('../fonts/Exo-Italic.ttf')  format('truetype'), /* Safari, Android, iOS */
+	     url('../fonts/Exo-Italic.svg#svgFontName') format('svg'); /* Legacy iOS */
+	}  
+@font-face {
+	font-family: 'Exo-Bold';
+	src: url('../fonts/Exo-Bold.eot'); /* IE9 Compat Modes */
+	src: url('../fonts/Exo-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+	     url('../fonts/Exo-Bold.woff') format('woff'), /* Modern Browsers */
+	     url('../fonts/Exo-Bold.ttf')  format('truetype'), /* Safari, Android, iOS */
+	     url('../fonts/Exo-Bold.svg#svgFontName') format('svg'); /* Legacy iOS */
+	}   
+@font-face {
+	font-family: 'Exo-SemiBold';
+	src: url('../fonts/Exo-SemiBold.eot'); /* IE9 Compat Modes */
+	src: url('../fonts/Exo-SemiBold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+	     url('../fonts/Exo-SemiBold.woff') format('woff'), /* Modern Browsers */
+	     url('../fonts/Exo-SemiBold.ttf')  format('truetype'), /* Safari, Android, iOS */
+	     url('../fonts/Exo-SemiBold.svg#svgFontName') format('svg'); /* Legacy iOS */
+	}
+.ctnt{
+  text-align: center;
+}
+
+.clear{
+        clear: both;
+}
+.left-pane,.right-pane{
+  display: none;
+}
+.slide {
+    position: absolute;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    -webkit-animation: slide 0.1s forwards;
+    -webkit-animation-delay: 1s;
+    animation: slide 0.1s forwards;
+    animation-delay: 2s;
+}
+
+@-webkit-keyframes slide {
+    100% { left: 0; position: relative !important;}
+}
+
+@keyframes slide {
+    100% { left: 0;position: relative !important; }
+}
+  
