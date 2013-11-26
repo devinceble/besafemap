@@ -26,7 +26,7 @@ angular.module("Expresso").controller("ExpressoCtrl", function($scope, $resource
 
            });
         });
-        var latlongb = new google.maps.LatLng(7.0723033 + 0.10, 125.61028329999999);
+        var latlongb = new google.maps.LatLng(7.0723033 + 0.55, 125.61028329999999);
         var marker = new google.maps.Marker({
                     position: latlongb,
                     map: map,
@@ -56,7 +56,37 @@ angular.module("Expresso").controller("ExpressoCtrl", function($scope, $resource
         console.log($scope.txtSearch);
     };
     
+    $scope.getLoc = function(){
+        geolocation.getLocation().then(function(data){
+            $scope.txtLat = data.coords.latitude;
+            $scope.txtLon = data.coords.longitude;
+        });
+    };
+
+    $scope.doHelp = function(){
+        var data = {'firstname': $scope.txtName, 'latitude': $scope.txtLat, 'longtidue': $scope.txtLon}
+        $http.post('/people/store', data).success(function(data){
+            console.log(data);
+        });
+
+        var infowindow = new google.maps.InfoWindow();
+        var latlongb = new google.maps.LatLng($scope.txtLat, $scope.txtLon);
+        var marker = new google.maps.Marker({
+                    position: latlongb,
+                    map: $scope.mapGeo,
+                    title: $scope.txtName,
+                    icon: 'img/32/alive.png'
+        });
+        google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.setContent($scope.txtMsg);
+                    infowindow.open($scope.mapGeo, this);
+                });
+
+        
+    };
+
     $scope.doGeo();
     $scope.doUp();
+    $scope.getLoc();
 });
 

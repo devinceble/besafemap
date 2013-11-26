@@ -25,11 +25,15 @@
 		</div>
 		<div class="content" data-role="content">
 			<div id="mapcon" style="width: 100%; height: 570px;"></div>
-			<!-- <iframe width="100%" height="570px" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/?ie=UTF8&amp;ll=-13.688688,-60.336914&amp;spn=13.166056,21.643066&amp;t=m&amp;z=6&amp;output=embed"></iframe><br /><small><a href="https://maps.google.com/?ie=UTF8&amp;ll=-13.688688,-60.336914&amp;spn=13.166056,21.643066&amp;t=m&amp;z=6&amp;source=embed" style="color:#0000FF;text-align:left">View Larger Map</a></small> -->
+			
 		</div>
 		<!-- panel 02 -->
 		<div class="panel right" data-role="panel" data-position="right" data-display="overlay" id="panel-02">
-			
+			<input type="text" ng-model="txtName" name="txtName" placeholder="Name"/>
+			<input type="text" ng-model="txtLat" name="txtLat"/>
+			<input type="text" ng-model="txtLon" name="txtLon"/>
+            <input type="text" ng-model="txtMsg" name="txtMsg" placeholder="Message"/>
+            <button ng-click="doHelp()">HELP</button>
 		</div>
 	</div>
 <script src="javascript/angular.min.js"></script>
